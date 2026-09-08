@@ -42,11 +42,13 @@ def plot_650_theory(ba138_freq650_ref, ref_name = "ba138_freq493_ref"):
 
 # plot function to plot carrier + EOM
 def plot_650_lab(ba137_freq650_carrier, 
+                 ref_name="ba137_freq650_carrier", 
                  ba137_EOM650_D0P1 = 0, 
                  ba137_EOM650_D1P1 = 0,
                  ba137_EOM650_D2P1 = 0,
                  our_ba138_freq650 = -1,
-                 ref_name="ba137_freq650_carrier", data_name = "our"):
+                 data_name = "lab",
+                 plot_not_used = False):
   print("650 lab values")
   print("\t", ref_name, ba137_freq650_carrier, "THz")
 
@@ -66,31 +68,33 @@ def plot_650_lab(ba137_freq650_carrier,
   plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D2P1,
               color= "purple", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D2P1")
-  plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D2P1,
-              color= "purple",
-              linestyle=":")
   plt.plot(ba137_freq650_carrier + ba137_EOM650_D2P1, 0, 'ro', markersize=5)
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D2P1, 1, 'ro', markersize=5)
   # D1P1
   plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D1P1,
               color= "green", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D1P1")
-  plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D1P1,
-              color= "green",
-              linestyle=":")
   plt.plot(ba137_freq650_carrier + ba137_EOM650_D1P1, 0, 'ro', markersize=5)
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D1P1, 1, 'ro', markersize=5)
   # D0P1
   plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D0P1,
               color= "orange", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D0P1")
-  plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D0P1,
-              color= "orange",
-              linestyle=":")
   plt.plot(ba137_freq650_carrier + ba137_EOM650_D0P1, 0, 'ro', markersize=5)
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D0P1, 1, 'ro', markersize=5)
 
   print("\t expr_ba137_freq650_D3P2", ba137_freq650_carrier, "THz")
   print("\t expr_ba137_freq650_D2P1", ba137_freq650_carrier + ba137_EOM650_D2P1, "THz")
   print("\t expr_ba137_freq650_D1P1", ba137_freq650_carrier + ba137_EOM650_D1P1, "THz")
   print("\t expr_ba137_freq650_D0P1", ba137_freq650_carrier + ba137_EOM650_D0P1, "THz")
+
+  if plot_not_used:
+    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D2P1,
+                color= "purple", # color = 'seagreen',
+                linestyle=":", label=f"{data_name}_ba137_freq650_D2P1 (not used)")
+    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D1P1,
+                color= "green", # color = 'seagreen',
+                linestyle=":", label=f"{data_name}_ba137_freq650_D1P1 (not used)")
+    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D0P1,
+                color= "orange", # color = 'seagreen',
+                linestyle=":", label=f"{data_name}_ba137_freq650_D0P1 (not used)")
+    plt.plot(ba137_freq650_carrier - ba137_EOM650_D2P1, 0, 'go', markersize=5)
+    plt.plot(ba137_freq650_carrier - ba137_EOM650_D1P1, 0, 'go', markersize=5)
+    plt.plot(ba137_freq650_carrier - ba137_EOM650_D0P1, 0, 'go', markersize=5)
