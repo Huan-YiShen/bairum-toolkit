@@ -1,12 +1,12 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from plot_energey_transitions.theory_value import isotope_shift_493, CentroidP_toP2, CentroidS_toS1, CentroidS_toS2
+from theory_value import isotope_shift_493, CentroidP_toP2, CentroidS_toS1, CentroidS_toS2
 
 '''
 Plot theory calcualtion from ba138_freq493_ref. 
 Ba138_freq493_ref should be an experimental value measured using frequency scan. 
 Everything is references to this value.
-ba138_freq493_ref: what the ion sees for the Ba-138 transition (measured in the lab, what the ion sees)
+ba138_freq493_ref: what the ion sees for the Ba-138 transition (measured in the lab)
 '''
 def plot_493_theory(ba138_freq493_ref, ref_name = "ba138_freq493_ref", plotCentroid = False):
   print("plot_493_theory")

@@ -1,6 +1,6 @@
 import matplotlib.pyplot as plt
 import numpy as np
-from plot_energey_transitions.theory_value import isotope_shift_650, centroidD_toD3, centroidD_toD2, centroidD_toD1, centroidD_toD0, centroidP_toP2, centroidP_toP1
+from theory_value import isotope_shift_650, centroidD_toD3, centroidD_toD2, centroidD_toD1, centroidD_toD0, centroidP_toP2, centroidP_toP1
 
 # theory plot
 def plot_650_theory(ba138_freq650_ref, ref_name = "ba138_freq493_ref"):
@@ -40,61 +40,115 @@ def plot_650_theory(ba138_freq650_ref, ref_name = "ba138_freq493_ref"):
   plt.plot(theory_ba137_freq650_D0P1, 0, '*', color = "orange", markersize=5)
 
 
-# plot function to plot carrier + EOM
-def plot_650_lab(ba137_freq650_carrier, 
-                 ref_name="ba137_freq650_carrier", 
+# plot function to plot carrier + EOM, carrier is parked at D2P1
+def plot_650_lab_carD2P1(ba137_freq650_carrier_n_AOM, 
+                 ba137_EOM650_D0P1 = 0, 
+                 ba137_EOM650_D1P1 = 0,
+                 ba137_EOM650_D3P2 = 0,
+                 our_ba138_freq650 = -1,
+                 ref_name="ba137_freq650_carrier_n_AOM", data_name = "our"):
+  print("650 lab values")
+  print("\t", ref_name, ba137_freq650_carrier_n_AOM, "THz")
+
+  if our_ba138_freq650 != -1:
+    ba138_EOM650 = our_ba138_freq650 - ba137_freq650_carrier_n_AOM
+    print("\t ba138_EOM650", ba138_EOM650*10e5, "MHz")
+    if np.abs(ba138_EOM650) < 0.000_3:
+        print("\t WARNING: ba138_EOM650 need to be >0.3 GHz")
+
+  # carrier
+  print("red dot are the the sideband we are using to drive the transition")
+  plt.axvline(x=ba137_freq650_carrier_n_AOM, color = 'red',
+              linestyle="-", label=f"{ref_name}")
+  plt.plot(ba137_freq650_carrier_n_AOM, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM, 1, 'ro', markersize=5)
+  # D2P1
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D3P2,
+              color= "purple", # color = 'seagreen',
+              linestyle=":", label=f"{data_name}_ba137_EOM650_D3P2")
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D3P2,
+              color= "purple",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D3P2, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D3P2, 1, 'ro', markersize=5)
+  # D1P1
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1,
+              color= "green", # color = 'seagreen',
+              linestyle=":", label=f"{data_name}_ba137_freq650_D1P1")
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D1P1,
+              color= "green",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, 1, 'ro', markersize=5)
+  # D0P1
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1,
+              color= "orange", # color = 'seagreen',
+              linestyle=":", label=f"{data_name}_ba137_freq650_D0P1")
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D0P1,
+              color= "orange",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, 1, 'ro', markersize=5)
+
+  print("\t expr_ba137_freq650_D3P2", ba137_freq650_carrier_n_AOM, "THz")
+  print("\t expr_ba137_EOM650_D3P2", ba137_freq650_carrier_n_AOM + ba137_EOM650_D3P2, "THz")
+  print("\t expr_ba137_freq650_D1P1", ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, "THz")
+  print("\t expr_ba137_freq650_D0P1", ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, "THz")
+
+
+
+
+def plot_650_lab_carD3P2(ba137_freq650_carrier_n_AOM, 
                  ba137_EOM650_D0P1 = 0, 
                  ba137_EOM650_D1P1 = 0,
                  ba137_EOM650_D2P1 = 0,
                  our_ba138_freq650 = -1,
-                 data_name = "lab",
-                 plot_not_used = False):
+                 ref_name="ba137_freq650_carrier_n_AOM", data_name = "our"):
   print("650 lab values")
-  print("\t", ref_name, ba137_freq650_carrier, "THz")
+  print("\t", ref_name, ba137_freq650_carrier_n_AOM, "THz")
 
   if our_ba138_freq650 != -1:
-    ba138_EOM650 = our_ba138_freq650 - ba137_freq650_carrier
+    ba138_EOM650 = our_ba138_freq650 - ba137_freq650_carrier_n_AOM
     print("\t ba138_EOM650", ba138_EOM650*10e5, "MHz")
     if np.abs(ba138_EOM650) < 0.000_3:
         print("\t WARNING: ba138_EOM650 need to be >0.3 GHz")
 
 
   # carrier
-  plt.axvline(x=ba137_freq650_carrier, color = 'red',
+  print("red dot are the the sideband we are using to drive the transition")
+  plt.axvline(x=ba137_freq650_carrier_n_AOM, color = 'red',
               linestyle="-", label=f"{ref_name}")
-  plt.plot(ba137_freq650_carrier, 0, 'ro', markersize=5)
-  plt.plot(ba137_freq650_carrier, 1, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM, 1, 'ro', markersize=5)
   # D2P1
-  plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D2P1,
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D2P1,
               color= "purple", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D2P1")
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D2P1, 0, 'ro', markersize=5)
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D2P1,
+              color= "purple",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D2P1, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D2P1, 1, 'ro', markersize=5)
   # D1P1
-  plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D1P1,
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1,
               color= "green", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D1P1")
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D1P1, 0, 'ro', markersize=5)
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D1P1,
+              color= "green",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, 1, 'ro', markersize=5)
   # D0P1
-  plt.axvline(x=ba137_freq650_carrier + ba137_EOM650_D0P1,
+  plt.axvline(x=ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1,
               color= "orange", # color = 'seagreen',
               linestyle=":", label=f"{data_name}_ba137_freq650_D0P1")
-  plt.plot(ba137_freq650_carrier + ba137_EOM650_D0P1, 0, 'ro', markersize=5)
+  plt.axvline(x=ba137_freq650_carrier_n_AOM - ba137_EOM650_D0P1,
+              color= "orange",
+              linestyle=":")
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, 0, 'ro', markersize=5)
+  plt.plot(ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, 1, 'ro', markersize=5)
 
-  print("\t expr_ba137_freq650_D3P2", ba137_freq650_carrier, "THz")
-  print("\t expr_ba137_freq650_D2P1", ba137_freq650_carrier + ba137_EOM650_D2P1, "THz")
-  print("\t expr_ba137_freq650_D1P1", ba137_freq650_carrier + ba137_EOM650_D1P1, "THz")
-  print("\t expr_ba137_freq650_D0P1", ba137_freq650_carrier + ba137_EOM650_D0P1, "THz")
-
-  if plot_not_used:
-    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D2P1,
-                color= "purple", # color = 'seagreen',
-                linestyle=":", label=f"{data_name}_ba137_freq650_D2P1 (not used)")
-    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D1P1,
-                color= "green", # color = 'seagreen',
-                linestyle=":", label=f"{data_name}_ba137_freq650_D1P1 (not used)")
-    plt.axvline(x=ba137_freq650_carrier - ba137_EOM650_D0P1,
-                color= "orange", # color = 'seagreen',
-                linestyle=":", label=f"{data_name}_ba137_freq650_D0P1 (not used)")
-    plt.plot(ba137_freq650_carrier - ba137_EOM650_D2P1, 0, 'go', markersize=5)
-    plt.plot(ba137_freq650_carrier - ba137_EOM650_D1P1, 0, 'go', markersize=5)
-    plt.plot(ba137_freq650_carrier - ba137_EOM650_D0P1, 0, 'go', markersize=5)
+  print("\t expr_ba137_freq650_D3P2", ba137_freq650_carrier_n_AOM, "THz")
+  print("\t expr_ba137_freq650_D2P1", ba137_freq650_carrier_n_AOM + ba137_EOM650_D2P1, "THz")
+  print("\t expr_ba137_freq650_D1P1", ba137_freq650_carrier_n_AOM + ba137_EOM650_D1P1, "THz")
+  print("\t expr_ba137_freq650_D0P1", ba137_freq650_carrier_n_AOM + ba137_EOM650_D0P1, "THz")
